@@ -10,6 +10,7 @@ edition = "2021"
 db = { path = "../crates/db" }
 migration = { path = "../crates/migration" }
 
+axum = { workspace = true }
 anyhow = { workspace = true }
 tokio = { workspace = true }
 sea-orm = { workspace = true }
