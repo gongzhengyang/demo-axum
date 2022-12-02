@@ -8,7 +8,6 @@ use sea_orm::{entity::prelude::DatabaseConnection, ConnectOptions, Database};
 pub static DB_CONNECT: Lazy<OnceCell<DatabaseConnection>> = Lazy::new(OnceCell::new);
 
 pub async fn db_connect() -> DatabaseConnection {
-    dotenvy::dotenv().ok();
     let db_name = env::var("POSTGRES_DB").unwrap_or("demo".into());
     let db_user = env::var("POSTGRES_USER").unwrap_or("demo-user".into());
     let db_password = env::var("POSTGRES_PASSWORD").unwrap_or("demo-password".into());
