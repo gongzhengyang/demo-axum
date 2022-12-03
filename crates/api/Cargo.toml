@@ -12,3 +12,6 @@ path = "src/lib.rs"
 db = { path = "../db" }
 entity = { path = "../entity" }
 axum = { workspace = true }
+sea-orm = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true}

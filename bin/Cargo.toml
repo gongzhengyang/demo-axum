@@ -9,6 +9,7 @@ edition = "2021"
 [dependencies]
 db = { path = "../crates/db" }
 migration = { path = "../crates/migration" }
+api = { path = "../crates/api" }
 
 axum = { workspace = true }
 anyhow = { workspace = true }
@@ -16,3 +17,5 @@ tokio = { workspace = true }
 sea-orm = { workspace = true }
 dotenvy = { workspace = true }
 tracing-subscriber = { workspace = true }
+tracing = { workspace = true}
+tower = { workspace = true }

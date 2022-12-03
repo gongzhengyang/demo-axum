@@ -19,8 +19,8 @@ pub async fn db_connect() -> DatabaseConnection {
             .unwrap_or(
                 format!("postgres://{}:{}@{}:{}/{}",
                         db_user, db_password, db_host, db_port, db_name)));
-    options.max_connections(100)
-        .min_connections(5)
+    options.max_connections(3)
+        .min_connections(2)
         .connect_timeout(Duration::from_secs(8))
         .acquire_timeout(Duration::from_secs(8))
         .idle_timeout(Duration::from_secs(8))

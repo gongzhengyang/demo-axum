@@ -56,6 +56,9 @@ dependencies = [
  "axum",
  "db",
  "entity",
+ "sea-orm",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -649,12 +652,15 @@ name = "demo-axum"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "api",
  "axum",
  "db",
  "dotenvy",
  "migration",
  "sea-orm",
  "tokio",
+ "tower",
+ "tracing",
  "tracing-subscriber",
 ]
 
@@ -706,6 +712,8 @@ name = "entity"
 version = "0.1.0"
 dependencies = [
  "sea-orm",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
