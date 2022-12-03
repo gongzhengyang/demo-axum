@@ -3,16 +3,10 @@ use std::str::FromStr;
 use std::sync::Arc;
 
 use aide::{axum::ApiRouter, openapi::OpenApi};
-use axum::{
-    routing::{post, put},
-    Extension, Server,
-};
-use tokio;
+use axum::{Extension, Server};
 use tower::ServiceBuilder;
 use tower_http::cors::{Any, CorsLayer};
-use tracing;
 
-use api;
 use db::get_db_connection;
 pub use migration::{Migrator, MigratorTrait};
 
@@ -49,7 +43,7 @@ async fn main() -> anyhow::Result<()> {
 }
 
 fn get_server_url() -> String {
-    let host = std::env::var("SERVER_HOST").unwrap_or("0.0.0.0".into());
-    let port = std::env::var("SERVER_PORT").unwrap_or("8088".into());
+    let host = std::env::var("SERVER_HOST").unwrap_or_else(|_| "0.0.0.0".into());
+    let port = std::env::var("SERVER_PORT").unwrap_or_else(|_| "8088".into());
     format!("{}:{}", host, port)
 }

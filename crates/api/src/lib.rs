@@ -5,12 +5,7 @@ use aide::{
     },
     transform::TransformOperation,
 };
-use axum::{
-    extract::{Path, Query},
-    http::StatusCode,
-    response::IntoResponse,
-    Extension, Json,
-};
+use axum::{extract::Path, http::StatusCode, Extension, Json};
 use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, PaginatorTrait, QueryOrder, Set};
 
 use entity::post;
@@ -36,10 +31,10 @@ pub async fn create(
     Json(request): Json<post::Model>,
 ) -> impl IntoApiResponse {
     post::ActiveModel {
-        title: Set(request.title.into()),
-        text: Set(request.text.into()),
-        is_checked: Set(request.is_checked.into()),
-        name: Set(request.name.into()),
+        title: Set(request.title),
+        text: Set(request.text),
+        is_checked: Set(request.is_checked),
+        name: Set(request.name),
         ..Default::default()
     }
     .save(db)
@@ -67,10 +62,10 @@ pub async fn update(
 
     post::ActiveModel {
         id: post.id,
-        title: Set(request.title.to_owned()),
-        text: Set(request.text.into()),
-        name: Set(request.name.to_owned()),
-        is_checked: Set(request.is_checked.to_owned()),
+        title: Set(request.title),
+        text: Set(request.text),
+        name: Set(request.name),
+        is_checked: Set(request.is_checked),
     }
     .update(db)
     .await

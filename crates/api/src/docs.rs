@@ -14,8 +14,6 @@ use axum::{
     response::{IntoResponse, Response},
     Extension, Json,
 };
-use tower_http::cors::Any;
-use tower_http::cors::CorsLayer;
 
 pub fn api_docs(api: TransformOpenApi) -> TransformOpenApi {
     api.title("demo axum swagger")

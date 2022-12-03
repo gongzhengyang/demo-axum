@@ -8,16 +8,18 @@ use tokio::sync::OnceCell;
 pub static DB_CONNECT: Lazy<OnceCell<DatabaseConnection>> = Lazy::new(OnceCell::new);
 
 pub async fn db_connect() -> DatabaseConnection {
-    let db_name = env::var("POSTGRES_DB").unwrap_or("demo".into());
-    let db_user = env::var("POSTGRES_USER").unwrap_or("demo-user".into());
-    let db_password = env::var("POSTGRES_PASSWORD").unwrap_or("demo-password".into());
-    let db_host = env::var("POSTGRES_HOST").unwrap_or("127.0.0.1".into());
-    let db_port = env::var("POSTGRES_PORT").unwrap_or("5432".into());
+    let db_name = env::var("POSTGRES_DB").unwrap_or_else(|_| "demo".into());
+    let db_user = env::var("POSTGRES_USER").unwrap_or_else(|_| "demo-user".into());
+    let db_password = env::var("POSTGRES_PASSWORD").unwrap_or_else(|_| "demo-password".into());
+    let db_host = env::var("POSTGRES_HOST").unwrap_or_else(|_| "127.0.0.1".into());
+    let db_port = env::var("POSTGRES_PORT").unwrap_or_else(|_| "5432".into());
 
-    let mut options = ConnectOptions::new(env::var("DB_URL").unwrap_or(format!(
-        "postgres://{}:{}@{}:{}/{}",
-        db_user, db_password, db_host, db_port, db_name
-    )));
+    let mut options = ConnectOptions::new(env::var("DB_URL").unwrap_or_else(|_| {
+        format!(
+            "postgres://{}:{}@{}:{}/{}",
+            db_user, db_password, db_host, db_port, db_name
+        )
+    }));
     options
         .max_connections(5)
         .min_connections(2)
