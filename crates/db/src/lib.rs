@@ -19,12 +19,12 @@ pub async fn db_connect() -> DatabaseConnection {
             .unwrap_or(
                 format!("postgres://{}:{}@{}:{}/{}",
                         db_user, db_password, db_host, db_port, db_name)));
-    options.max_connections(3)
+    options.max_connections(5)
         .min_connections(2)
-        .connect_timeout(Duration::from_secs(8))
-        .acquire_timeout(Duration::from_secs(8))
-        .idle_timeout(Duration::from_secs(8))
-        .max_lifetime(Duration::from_secs(8))
+        .connect_timeout(Duration::from_secs(3))
+        .acquire_timeout(Duration::from_secs(3))
+        .idle_timeout(Duration::from_secs(100))
+        .max_lifetime(Duration::from_secs(100))
         .set_schema_search_path("public".into()); // Setting default PostgreSQL schema
 
     let db = Database::connect(options)

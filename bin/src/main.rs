@@ -1,7 +1,7 @@
 use std::net::SocketAddr;
 use std::str::FromStr;
 
-use axum::{Extension, Router, routing::{post, put, get}, Server};
+use axum::{Extension, Router, routing::{post, put}, Server};
 use tokio;
 use tower::ServiceBuilder;
 use tracing;
@@ -24,8 +24,8 @@ async fn main() -> anyhow::Result<()>{
         .serve(Router::new()
             .nest("/model",
                   Router::new()
-                      .route("/", post(api::add).get(api::list))
-                      .route("/:id", put(api::update)))
+                      .route("/", post(api::create).get(api::list))
+                      .route("/:id", put(api::update).delete(api::delete)))
             .layer(
                 ServiceBuilder::new()
                     .layer(Extension(db)),

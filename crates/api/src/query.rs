@@ -1,10 +1,12 @@
 use serde::Deserialize;
-use serde_json;
 
+/// 查询参数
 #[derive(Deserialize, Debug)]
 pub struct Params {
+    /// 页码
     #[serde(default = "default_page_num")]
     pub page_num: u64,
+    /// 每页的大小
     #[serde(default = "default_page_size")]
     pub page_size: u64,
 }

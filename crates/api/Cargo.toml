@@ -15,3 +15,5 @@ axum = { workspace = true }
 sea-orm = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true}
+aide = { workspace = true }
+schemars = { workspace = true }
