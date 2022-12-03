@@ -9,5 +9,5 @@ pub struct ListResponse {
     /// 最大页数
     pub max_page: u64,
     /// 结果列表
-    pub results: Vec<entity::post::Model>
+    pub results: Vec<entity::post::Model>,
 }

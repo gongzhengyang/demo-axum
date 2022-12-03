@@ -1,9 +1,15 @@
 use std::net::SocketAddr;
 use std::str::FromStr;
+use std::sync::Arc;
 
-use axum::{Extension, Router, routing::{post, put}, Server};
+use aide::{axum::ApiRouter, openapi::OpenApi};
+use axum::{
+    routing::{post, put},
+    Extension, Server,
+};
 use tokio;
 use tower::ServiceBuilder;
+use tower_http::cors::{Any, CorsLayer};
 use tracing;
 
 use api;
@@ -11,25 +17,33 @@ use db::get_db_connection;
 pub use migration::{Migrator, MigratorTrait};
 
 #[tokio::main]
-async fn main() -> anyhow::Result<()>{
+async fn main() -> anyhow::Result<()> {
     dotenvy::dotenv().ok();
     tracing_subscriber::fmt::init();
     let db = get_db_connection().await;
     Migrator::up(db, None).await?;
 
-    let addr = SocketAddr::from_str(get_server_url().as_str())
-        .expect("host:port is error");
+    aide::gen::on_error(|error| {
+        println!("{error}");
+    });
+
+    aide::gen::extract_schemas(true);
+    let mut api = OpenApi::default();
+    let router = ApiRouter::new()
+        .nest_api_service("/model", api::post_router())
+        .nest_api_service("/docs", api::docs::api_docs_json())
+        .finish_api_with(&mut api, api::docs::api_docs)
+        .layer(
+            ServiceBuilder::new()
+                .layer(Extension(db))
+                .layer(Extension(Arc::new(api)))
+                .layer(CorsLayer::new().allow_origin(Any)),
+        );
+
+    let addr = SocketAddr::from_str(get_server_url().as_str()).expect("host:port is error");
     tracing::info!("listen {:?}", addr);
     Server::bind(&addr)
-        .serve(Router::new()
-            .nest("/model",
-                  Router::new()
-                      .route("/", post(api::create).get(api::list))
-                      .route("/:id", put(api::update).delete(api::delete)))
-            .layer(
-                ServiceBuilder::new()
-                    .layer(Extension(db)),
-            ).into_make_service())
+        .serve(router.into_make_service())
         .await?;
     Ok(())
 }

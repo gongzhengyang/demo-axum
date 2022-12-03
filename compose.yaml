@@ -12,5 +12,17 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
+  swagger:
+    image: swaggerapi/swagger-ui:latest
+    restart: always
+    container_name: swagger
+    ports:
+      - 8081:8080
+    environment:
+      - SWAGGER_JSON_URL=http://172.17.0.1:${SERVER_PORT}/docs/private/api.json
+      - DEFAULT_MODELS_EXPAND_DEPTH=10
+      - DEFAULT_MODEL_EXPAND_DEPTH=10
+      - DEFAULT_MODEL_RENDERING=model
+
 volumes:
   demo-axum-postgres: {}

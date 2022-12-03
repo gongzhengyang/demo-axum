@@ -20,7 +20,12 @@ impl MigrationTrait for Migration {
                     )
                     .col(ColumnDef::new(Post::Title).string().not_null())
                     .col(ColumnDef::new(Post::Text).string().not_null())
-                    .col(ColumnDef::new(Post::IsChecked).boolean().not_null().default(true))
+                    .col(
+                        ColumnDef::new(Post::IsChecked)
+                            .boolean()
+                            .not_null()
+                            .default(true),
+                    )
                     // .col(ColumnDef::new(Post::CreateTime).date_time().default())
                     .col(ColumnDef::new(Post::Name).string_len(32).not_null())
                     .to_owned(),
