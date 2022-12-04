@@ -26,3 +26,4 @@ services:
 
 volumes:
   demo-axum-postgres: {}
+
