@@ -5,7 +5,11 @@ use aide::{
     },
     transform::TransformOperation,
 };
-use axum::{extract::{Path, Query}, http::StatusCode, Extension, Json};
+use axum::{
+    extract::{Path, Query},
+    http::StatusCode,
+    Extension, Json,
+};
 use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, PaginatorTrait, QueryOrder, Set};
 
 use entity::post;
@@ -80,7 +84,7 @@ pub fn update_docs(op: TransformOperation) -> TransformOperation {
 
 pub async fn list(
     Extension(db): Extension<&DatabaseConnection>,
-    Query(params): Query<query::Params>
+    Query(params): Query<query::Params>,
 ) -> impl IntoApiResponse {
     // let params = query::Params {
     //     page_size: 10,
