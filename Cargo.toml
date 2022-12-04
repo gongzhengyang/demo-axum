@@ -21,6 +21,6 @@ log = "0.4"
 dotenvy = "0.15.0"
 once_cell = "1"
 anyhow = "1.0.60"
-aide = { version = "0.9", features = ["axum", "redoc", "axum-extra", "macros"]}
+aide = { version = "0.9", features = ["redoc", "macros", "axum-extra-query"]}
 schemars = "0.8"
 hyper = "0"

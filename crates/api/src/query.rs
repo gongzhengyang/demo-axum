@@ -1,7 +1,8 @@
 use serde::Deserialize;
+use schemars::JsonSchema;
 
 /// 查询参数
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, JsonSchema)]
 pub struct Params {
     /// 页码
     #[serde(default = "default_page_num")]

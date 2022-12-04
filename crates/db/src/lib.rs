@@ -22,7 +22,7 @@ pub async fn db_connect() -> DatabaseConnection {
     }));
     options
         .max_connections(5)
-        .min_connections(2)
+        .min_connections(5)
         .connect_timeout(Duration::from_secs(3))
         .acquire_timeout(Duration::from_secs(3))
         .idle_timeout(Duration::from_secs(100))
