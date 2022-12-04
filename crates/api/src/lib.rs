@@ -86,10 +86,6 @@ pub async fn list(
     Extension(db): Extension<&DatabaseConnection>,
     Query(params): Query<query::Params>,
 ) -> impl IntoApiResponse {
-    // let params = query::Params {
-    //     page_size: 10,
-    //     page_num: 1,
-    // };
     let paginator = post::Entity::find()
         .order_by_asc(post::Column::Id)
         .paginate(db, params.page_size);
@@ -104,7 +100,7 @@ pub async fn list(
 
 pub fn list_docs(op: TransformOperation) -> TransformOperation {
     op.summary("查询文章")
-        .response::<200, Json<responses::ListResponse>>()
+        .response::<200, Json<responses::ListResponse<post::Model>>>()
 }
 
 pub async fn delete(
