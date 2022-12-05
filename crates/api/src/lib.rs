@@ -17,6 +17,7 @@ use entity::post;
 pub mod docs;
 mod query;
 mod responses;
+pub mod statics;
 
 pub fn post_router() -> ApiRouter {
     ApiRouter::new()
