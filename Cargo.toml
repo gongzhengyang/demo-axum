@@ -9,8 +9,9 @@ edition = "2021"
 [workspace.dependencies]
 sea-orm = { version = "0.10.4", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros"]}
 axum = "0.6"
+axum-extra = { version = "0", features = ["spa"] }
 tower = "0"
-tower-http = { version = "0", features = ["cors"] }
+tower-http = { version = "0", features = ["cors", "fs"] }
 tokio = { version = "1", features = ["full"]}
 serde = "1"
 serde_json = "1"

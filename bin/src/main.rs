@@ -3,8 +3,11 @@ use std::str::FromStr;
 use std::sync::Arc;
 
 use aide::{axum::ApiRouter, openapi::OpenApi};
-use axum::{Extension, Server};
+use axum::{Extension, routing::get_service, Server};
 use tower::ServiceBuilder;
+use tower_http::{
+    services::{ServeDir, ServeFile},
+};
 use tower_http::cors::{Any, CorsLayer};
 
 use db::get_db_connection;
@@ -21,18 +24,23 @@ async fn main() -> anyhow::Result<()> {
         println!("{error}");
     });
 
+    let serve_dir = ServeDir::new("statics")
+        .not_found_service(ServeFile::new("statics/index.html"));
+    let serve_dir = get_service(serve_dir).handle_error(api::docs::handle_error);
+
     aide::gen::extract_schemas(true);
     let mut api = OpenApi::default();
     let router = ApiRouter::new()
         .nest_api_service("/model", api::post_router())
         .nest_api_service("/docs", api::docs::api_docs_json())
+        .nest_service("/statics", serve_dir.clone())
         .finish_api_with(&mut api, api::docs::api_docs)
         .layer(
             ServiceBuilder::new()
                 .layer(Extension(db))
                 .layer(Extension(Arc::new(api)))
                 .layer(CorsLayer::new().allow_origin(Any)),
-        );
+        ).fallback_service(serve_dir);
 
     let addr = SocketAddr::from_str(get_server_url().as_str()).expect("host:port is error");
     tracing::info!("listen {:?}", addr);

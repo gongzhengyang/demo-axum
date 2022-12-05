@@ -1,4 +1,5 @@
 use std::sync::Arc;
+use std::io;
 
 use aide::transform::TransformOpenApi;
 use aide::{
@@ -13,6 +14,7 @@ use axum::{
     body::Body,
     response::{IntoResponse, Response},
     Extension, Json,
+    http::StatusCode,
 };
 
 pub fn api_docs(api: TransformOpenApi) -> TransformOpenApi {
@@ -51,4 +53,9 @@ async fn serve_docs(Extension(api): Extension<Arc<OpenApi>>) -> impl IntoApiResp
         .unwrap()
         .replace("openapi\":\"3.1.0", "openapi\":\"3.0.1");
     Response::from_parts(parts, Body::from(str.into_bytes()))
+}
+
+
+pub async fn handle_error(_err: io::Error) -> impl IntoResponse {
+    (StatusCode::INTERNAL_SERVER_ERROR, "Something went wrong...")
 }

@@ -12,6 +12,7 @@ migration = { path = "../crates/migration" }
 api = { path = "../crates/api" }
 
 axum = { workspace = true }
+axum-extra = { workspace = true }
 anyhow = { workspace = true }
 tokio = { workspace = true }
 sea-orm = { workspace = true }

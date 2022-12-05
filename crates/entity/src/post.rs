@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 /// 文章模型
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Deserialize, Serialize, JsonSchema)]
 #[sea_orm(table_name = "post")]
+#[serde(rename = "PostModel")]
 pub struct Model {
     #[sea_orm(primary_key)]
     #[serde(skip_deserializing)]
