@@ -6,13 +6,11 @@ use aide::{axum::ApiRouter, openapi::OpenApi};
 use axum::{
     Extension,
     handler::HandlerWithoutStateExt,
-    routing::{get_service, get},
+    routing::{get},
     Server
 };
 use tower::ServiceBuilder;
-use tower_http::{
-    services::{ServeDir, ServeFile},
-};
+
 use tower_http::cors::{Any, CorsLayer};
 
 use db::get_db_connection;
