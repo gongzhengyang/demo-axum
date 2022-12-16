@@ -19,6 +19,13 @@ pub use migration::{Migrator, MigratorTrait};
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     dotenvy::dotenv().ok();
+    let rust_log_key = "RUST_LOG";
+    let rust_log_level = std::env::var(rust_log_key)
+        .unwrap_or_else(|_| {
+            std::env::set_var(rust_log_key, "INFO");
+            std::env::var(rust_log_key).unwrap()
+        });
+    println!("rust log is: {rust_log_level}");
     tracing_subscriber::fmt::init();
     let db = get_db_connection().await;
     Migrator::up(db, None).await?;
@@ -53,5 +60,5 @@ async fn main() -> anyhow::Result<()> {
 fn get_server_url() -> String {
     let host = std::env::var("SERVER_HOST").unwrap_or_else(|_| "0.0.0.0".into());
     let port = std::env::var("SERVER_PORT").unwrap_or_else(|_| "8088".into());
-    format!("{}:{}", host, port)
+    format!("{host}:{port}")
 }
